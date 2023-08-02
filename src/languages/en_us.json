@@ -1,0 +1,26 @@
+{
+  "app": {
+    "appName": "Auth-js",
+    "companyName": "CodeDead",
+    "link": "https://codedead.com"
+  },
+  "home": "Home",
+  "settings": "Settings",
+  "logout": "Logout",
+  "logIn": "Log in",
+  "register": "Register",
+  "confirmLogout": "Are you sure you want to logout?",
+  "confirmation": "Confirmation",
+  "no": "No",
+  "yes": "Yes",
+  "forgotPassword": "Forgot password?",
+  "rememberMe": "Remember me",
+  "password": "Password",
+  "emailAddress": "Email address",
+  "signIn": "Sign in",
+  "404": {
+    "title": "404",
+    "message": "The page you are looking for does not exist.",
+    "backHome": "Back Home"
+  }
+}
