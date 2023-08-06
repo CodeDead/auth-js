@@ -17,7 +17,11 @@
   "rememberMe": "Remember me",
   "password": "Password",
   "emailAddress": "Email address",
+  "username": "Username",
   "signIn": "Sign in",
+  "firstName": "First name",
+  "lastName": "Last name",
+  "passwordsDoNotMatch": "Passwords do not match",
   "404": {
     "title": "404",
     "message": "The page you are looking for does not exist.",

@@ -85,7 +85,7 @@ const DrawerBar = ({
 
   const settingsItem = (
     <ListItem disablePadding>
-      <ListItemButton onClick={goToSettings} selected={pageIndex === 2}>
+      <ListItemButton onClick={goToSettings} selected={pageIndex === 3}>
         <ListItemIcon><SettingsIcon color="inherit" /></ListItemIcon>
         <ListItemText>{language.settings}</ListItemText>
       </ListItemButton>

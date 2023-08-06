@@ -11,6 +11,7 @@ import ProtectedRoute from '../ProtectedRoute';
 const Home = lazy(() => import('../../routes/Home'));
 const NotFound = lazy(() => import('../../routes/NotFound'));
 const Login = lazy(() => import('../../routes/Login'));
+const Register = lazy(() => import('../../routes/Register'));
 
 const App = () => {
   const [state] = useContext(MainContext);
@@ -42,6 +43,7 @@ const App = () => {
           <Routes>
             <Route exact path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
             <Route exact path="/login" element={<Login />} />
+            <Route exact path="/register" element={<Register />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>

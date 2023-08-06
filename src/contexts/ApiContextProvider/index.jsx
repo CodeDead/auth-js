@@ -4,11 +4,12 @@ import ApiReducer from '../../reducers/ApiReducer';
 const token = localStorage.bearerToken && localStorage.bearerToken !== 'null' ? localStorage.bearerToken : undefined;
 
 const initState = {
-  baseUrl: 'http://localhost:8080',
+  baseUrl: 'http://localhost:8080/api/v1',
   authentication: {
     baseUrl: '/authentication',
     endpoints: {
       login: '/login',
+      register: '/register',
       getCurrentUser: '/current',
     },
   },
@@ -43,9 +44,8 @@ const initState = {
     },
   },
   bearerToken: token,
-  currentUser: {
-    permissions: [],
-  },
+  currentUser: null,
+  userPermissions: null,
 };
 
 export const ApiContext = createContext(initState);

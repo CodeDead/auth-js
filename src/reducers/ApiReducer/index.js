@@ -1,5 +1,5 @@
 import {
-  SET_BEARER_TOKEN, SET_PERMISSIONS,
+  SET_BEARER_TOKEN, SET_CURRENT_USER, SET_PERMISSIONS,
 } from './Actions/actionTypes';
 
 const ApiReducer = (state, action) => {
@@ -8,19 +8,21 @@ const ApiReducer = (state, action) => {
       if (!action.payload.token) {
         localStorage.removeItem('bearerToken');
       } else if (action.payload.remember) {
-        localStorage.bearerToken = action.payload;
+        localStorage.bearerToken = action.payload.token;
       }
       return {
         ...state,
-        bearerToken: action.payload,
+        bearerToken: action.payload.token,
       };
     case SET_PERMISSIONS:
       return {
         ...state,
-        currentUser: {
-          ...state.currentUser,
-          permissions: action.payload,
-        },
+        userPermissions: action.payload,
+      };
+    case SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload,
       };
     default:
       return state;

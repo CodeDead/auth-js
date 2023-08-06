@@ -2,14 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import axios from 'axios';
@@ -18,52 +14,52 @@ import { setPageIndex } from '../../reducers/MainReducer/Actions';
 import { MainContext } from '../../contexts/MainContextProvider';
 import { ApiContext } from '../../contexts/ApiContextProvider';
 import Copyright from '../../components/Copyright';
-import { setBearerToken } from '../../reducers/ApiReducer/Actions';
 
-const Login = () => {
+const Register = () => {
   const [state, d1] = useContext(MainContext);
-  const [api, d2] = useContext(ApiContext);
+  const [api] = useContext(ApiContext);
 
-  const { pageBeforeLogin, languageIndex, languages } = state;
+  const { languageIndex, languages } = state;
   const { bearerToken } = api;
 
   const language = languages[languageIndex];
-  const loginApi = api.baseUrl + api.authentication.baseUrl + api.authentication.endpoints.login;
+  const registerApi = api.baseUrl + api.authentication.baseUrl
+    + api.authentication.endpoints.register;
 
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
+  const [passwordAgain, setPasswordAgain] = useState('');
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
-  /**
-   * Handle the submit event
-   * @param event The submit event
-   */
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (password !== passwordAgain) {
+      setError(language.passwordsDoNotMatch);
+      return;
+    }
 
     setLoading(true);
     setError(null);
 
     const req = {
       username,
+      email,
+      firstName,
+      lastName,
       password,
     };
 
-    axios.post(loginApi, req)
-      .then((res) => {
-        if (res.data && res.data.token) {
-          d2(setBearerToken(res.data.token, rememberMe));
-
-          if (pageBeforeLogin && pageBeforeLogin.length > 0) {
-            window.location.href = pageBeforeLogin;
-          } else {
-            navigate('/');
-          }
-        }
+    axios.post(registerApi, req)
+      .then(() => {
+        navigate('/login');
       })
       .catch((err) => {
         if (err.response && err.response.data && err.response.data.message) {
@@ -87,7 +83,7 @@ const Login = () => {
   };
 
   useEffect(() => {
-    d1(setPageIndex(1));
+    d1(setPageIndex(2));
   }, []);
 
   useEffect(() => {
@@ -107,10 +103,10 @@ const Login = () => {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
+          <AppRegistrationIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          {language.signIn}
+          {language.register}
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
@@ -129,6 +125,40 @@ const Login = () => {
             margin="normal"
             required
             fullWidth
+            id="email"
+            label={language.emailAddress}
+            name="email"
+            type="email"
+            value={email}
+            disabled={loading}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="firstname"
+            label={language.firstName}
+            name="firstname"
+            autoFocus
+            value={firstName}
+            disabled={loading}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            fullWidth
+            id="lastname"
+            label={language.lastName}
+            name="lastname"
+            autoFocus
+            value={lastName}
+            disabled={loading}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             name="password"
             label={language.password}
             type="password"
@@ -138,17 +168,18 @@ const Login = () => {
             disabled={loading}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <FormControlLabel
-            control={(
-              <Checkbox
-                value="remember"
-                color="primary"
-                checked={rememberMe}
-                disabled={loading}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              />
-          )}
-            label={language.rememberMe}
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="passwordagain"
+            label={language.password}
+            type="password"
+            id="passwordagain"
+            autoComplete="current-password-again"
+            value={passwordAgain}
+            disabled={loading}
+            onChange={(e) => setPasswordAgain(e.target.value)}
           />
           <Button
             type="submit"
@@ -157,20 +188,8 @@ const Login = () => {
             disabled={loading}
             sx={{ mt: 3, mb: 2 }}
           >
-            {language.logIn}
+            {language.register}
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="/forgot-password" variant="body2">
-                {language.forgotPassword}
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="/register" variant="body2">
-                {language.register}
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
       <Copyright
@@ -187,4 +206,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
